@@ -1,0 +1,158 @@
+name: Build and Deploy Widget
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build widget
+        run: npm run build-widget
+
+      - name: Generate version info
+        id: version
+        run: |
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            VERSION="${{ github.event.release.tag_name }}"
+          else
+            VERSION="v$(date +%Y%m%d)-$(echo ${{ github.sha }} | cut -c1-8)"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+      - name: Create versioned widget file
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          cp dist/dog-name-generator-widget.iife.js "dog-name-generator-widget-$VERSION.iife.js"
+          cp dist/dog-name-generator-widget.iife.js dog-name-generator-widget.iife.js
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: widget-build-${{ steps.version.outputs.version }}
+          path: |
+            dog-name-generator-widget*.iife.js
+            dist/
+
+      - name: Commit and push built files
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add dog-name-generator-widget*.iife.js
+          git diff --staged --quiet || git commit -m "🚀 Auto-build widget ${{ steps.version.outputs.version }} [skip ci]"
+          git push
+
+      - name: Purge CDN Cache
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          echo "Purging CDN cache..."
+          curl -X GET "https://purge.jsdelivr.net/gh/${{ github.repository }}/dog-name-generator-widget.iife.js"
+          echo "CDN cache purged successfully!"
+
+      - name: Create GitHub Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: Widget Release ${{ steps.version.outputs.version }}
+          body: |
+            ## 🐕 Dog Name Generator Widget - ${{ steps.version.outputs.version }}
+
+            ### 📦 Built Files
+            - `dog-name-generator-widget.iife.js` - Main widget file
+            - `dog-name-generator-widget-${{ steps.version.outputs.version }}.iife.js` - Versioned widget file
+
+            ### 🔗 CDN URLs
+            - **Latest**: `https://cdn.jsdelivr.net/gh/${{ github.repository }}/dog-name-generator-widget.iife.js`
+            - **Versioned**: `https://cdn.jsdelivr.net/gh/${{ github.repository }}@${{ steps.version.outputs.version }}/dog-name-generator-widget.iife.js`
+
+            ### 🚀 Usage
+            ```html
+            <div class="dog-name-generator-widget" data-api-key="YOUR_GEMINI_API_KEY"></div>
+            <script src="https://cdn.jsdelivr.net/gh/${{ github.repository }}/dog-name-generator-widget.iife.js"></script>
+            ```
+
+            Built from commit: ${{ github.sha }}
+          files: |
+            dog-name-generator-widget*.iife.js
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: widget-build-${{ needs.build.outputs.version }}
+
+      - name: Test widget file exists and is valid
+        run: |
+          if [ -f "dog-name-generator-widget.iife.js" ]; then
+            echo "✅ Widget file exists"
+            SIZE=$(wc -c < dog-name-generator-widget.iife.js)
+            echo "📦 Widget size: $SIZE bytes"
+            if [ $SIZE -gt 1000 ]; then
+              echo "✅ Widget file size is reasonable"
+            else
+              echo "❌ Widget file seems too small"
+              exit 1
+            fi
+            
+            # Check if file contains expected content
+            if grep -q "DogNameGeneratorGemini" dog-name-generator-widget.iife.js; then
+              echo "✅ Widget contains expected component"
+            else
+              echo "❌ Widget missing expected component"
+              exit 1
+            fi
+            
+            if grep -q "background.*gradient" dog-name-generator-widget.iife.js; then
+              echo "✅ Widget contains inline styles"
+            else
+              echo "❌ Widget missing inline styles"
+              exit 1
+            fi
+            
+          else
+            echo "❌ Widget file not found"
+            exit 1
+          fi
