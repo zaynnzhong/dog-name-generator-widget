@@ -778,7 +778,11 @@ export default function DogNameGeneratorGemini({
                   >
                     <div style={{ fontSize: "18px" }}>{pref.emoji}</div>
                     <div style={{ fontSize: "14px", fontWeight: "700" }}>
-                      {pref.label.split(" ")[1]}
+                      {pref.label.includes("Gen")
+                        ? pref.label.split(" ")[1] +
+                          " " +
+                          pref.label.split(" ")[2]
+                        : pref.label.split(" ")[1]}
                     </div>
                     <div style={{ fontSize: "11px", opacity: "0.8" }}>
                       {pref.description}
