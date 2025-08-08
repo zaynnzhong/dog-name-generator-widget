@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Heart, Sparkles, Dog, Key } from "lucide-react";
+import React, { useState } from "react";
+import { Heart, Sparkles, Dog, Key, Search } from "lucide-react";
 
 interface DogNameGeneratorProps {
   apiKey?: string;
@@ -16,6 +16,7 @@ export default function DogNameGeneratorGemini({
   const [showResults, setShowResults] = useState(false);
   const [apiKey, setApiKey] = useState(propApiKey || "");
   const [showApiKeyInput, setShowApiKeyInput] = useState(!propApiKey);
+  const [showBreedDropdown, setShowBreedDropdown] = useState(false);
 
   // Comprehensive dog breed list
   const dogBreeds = [
@@ -131,18 +132,72 @@ export default function DogNameGeneratorGemini({
   ];
 
   const preferences = [
-    { value: "food", label: "🍖 Food", emoji: "🍕" },
-    { value: "object", label: "⚽ Objects", emoji: "🎾" },
-    { value: "location", label: "🌎 Places", emoji: "🏔️" },
-    { value: "nature", label: "🌺 Nature", emoji: "🌸" },
-    { value: "character", label: "🦸 Characters", emoji: "🎭" },
-    { value: "color", label: "🎨 Colors", emoji: "🌈" },
+    {
+      value: "food",
+      label: "🍖 Food",
+      emoji: "🍕",
+      description: "Delicious treats & meals",
+    },
+    {
+      value: "object",
+      label: "⚽ Objects",
+      emoji: "🎾",
+      description: "Toys, tools & things",
+    },
+    {
+      value: "location",
+      label: "🌎 Places",
+      emoji: "🏔️",
+      description: "Cities, countries & landmarks",
+    },
+    {
+      value: "nature",
+      label: "🌺 Nature",
+      emoji: "🌸",
+      description: "Flowers, trees & elements",
+    },
+    {
+      value: "character",
+      label: "🦸 Characters",
+      emoji: "🎭",
+      description: "Movies, books & heroes",
+    },
+    {
+      value: "color",
+      label: "🎨 Colors",
+      emoji: "🌈",
+      description: "Vibrant hues & shades",
+    },
+    {
+      value: "traditional",
+      label: "👑 Traditional",
+      emoji: "⭐",
+      description: "Popular & trending names",
+    },
+    {
+      value: "millennial",
+      label: "📱 Millennial",
+      emoji: "💿",
+      description: "90s kids vibes",
+    },
+    {
+      value: "genz",
+      label: "🔥 Gen Z",
+      emoji: "✨",
+      description: "Internet culture & slang",
+    },
+    {
+      value: "genalpha",
+      label: "🚀 Gen Alpha",
+      emoji: "🎮",
+      description: "Digital natives & memes",
+    },
   ];
 
-  // Filter breeds based on input
+  // Enhanced breed filtering with search
   const filteredBreeds = dogBreeds
     .filter((dogBreed) => dogBreed.toLowerCase().includes(breed.toLowerCase()))
-    .slice(0, 8); // Show max 8 suggestions
+    .slice(0, 10); // Show max 10 suggestions
 
   const handleApiKeySubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,7 +222,25 @@ export default function DogNameGeneratorGemini({
     setShowResults(false);
 
     try {
-      const prompt = `Generate 5 creative and playful dog names for a ${gender} ${breed} dog. The names should be inspired by ${preference}. Make the names fun, memorable, and suitable for a beloved pet. Return only the names, one per line, without numbers or bullets.`;
+      let prompt = "";
+
+      // Create specialized prompts based on preference
+      switch (preference) {
+        case "traditional":
+          prompt = `Generate 5 popular and traditional dog names for a ${gender} ${breed} dog. Research and use the most trending, classic, and beloved dog names from recent years. Include timeless favorites that are currently popular among dog owners. Make them memorable and widely loved. Return only the names, one per line, without numbers or bullets.`;
+          break;
+        case "millennial":
+          prompt = `Generate 5 Millennial-inspired dog names for a ${gender} ${breed} dog. Think 90s and early 2000s culture: pop culture references, nostalgic brands, TV shows like Friends/Seinfeld, music artists, and that era's vibe. Names should feel nostalgic and "millennial core." Return only the names, one per line, without numbers or bullets.`;
+          break;
+        case "genz":
+          prompt = `Generate 5 Gen Z-inspired dog names for a ${gender} ${breed} dog. Think internet culture, social media slang, viral memes, TikTok trends, aesthetic names, and modern digital culture. Names should feel current, trendy, and "very demure, very mindful." Return only the names, one per line, without numbers or bullets.`;
+          break;
+        case "genalpha":
+          prompt = `Generate 5 Gen Alpha-inspired dog names for a ${gender} ${breed} dog. Think digital natives, gaming culture, streaming, AI/tech terms, modern slang, and cutting-edge internet culture. Names should feel futuristic and "skibidi" cool. Return only the names, one per line, without numbers or bullets.`;
+          break;
+        default:
+          prompt = `Generate 5 creative and playful dog names for a ${gender} ${breed} dog. The names should be inspired by ${preference}. Make the names fun, memorable, and suitable for a beloved pet. Return only the names, one per line, without numbers or bullets.`;
+      }
 
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
@@ -402,7 +475,7 @@ export default function DogNameGeneratorGemini({
     <>
       <div
         style={{
-          maxWidth: "500px",
+          maxWidth: "600px",
           margin: "0 auto",
           padding: "24px",
           fontFamily: "system-ui, -apple-system, sans-serif",
@@ -469,8 +542,9 @@ export default function DogNameGeneratorGemini({
 
         {!showResults ? (
           <div
-            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
           >
+            {/* Enhanced Breed Search */}
             <div style={{ position: "relative" }}>
               <label
                 style={{
@@ -483,36 +557,44 @@ export default function DogNameGeneratorGemini({
               >
                 🐕 Dog Breed
               </label>
-              <input
-                type="text"
-                value={breed}
-                onChange={(e) => setBreed(e.target.value)}
-                placeholder="Start typing a breed name..."
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  borderRadius: "8px",
-                  border: "none",
-                  fontSize: "16px",
-                  outline: "none",
-                  background: "rgba(255,255,255,0.1)",
-                  color: "white",
-                  backdropFilter: "blur(10px)",
-                  boxSizing: "border-box",
-                }}
-                onFocus={(e) => {
-                  e.target.style.background = "rgba(255,255,255,0.2)";
-                  e.target.style.transform = "scale(1.02)";
-                }}
-                onBlur={(e) => {
-                  // Delay to allow breed selection
-                  setTimeout(() => {
-                    e.target.style.background = "rgba(255,255,255,0.1)";
-                    e.target.style.transform = "scale(1)";
-                  }, 200);
-                }}
-              />
-              {breed && filteredBreeds.length > 0 && (
+              <div style={{ position: "relative" }}>
+                <Search
+                  size={16}
+                  style={{
+                    position: "absolute",
+                    left: "12px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    color: "rgba(255,255,255,0.7)",
+                  }}
+                />
+                <input
+                  type="text"
+                  value={breed}
+                  onChange={(e) => {
+                    setBreed(e.target.value);
+                    setShowBreedDropdown(true);
+                  }}
+                  onFocus={() => setShowBreedDropdown(true)}
+                  onBlur={() =>
+                    setTimeout(() => setShowBreedDropdown(false), 200)
+                  }
+                  placeholder="Search for your dog's breed..."
+                  style={{
+                    width: "100%",
+                    padding: "12px 12px 12px 40px",
+                    borderRadius: "8px",
+                    border: "none",
+                    fontSize: "16px",
+                    outline: "none",
+                    background: "rgba(255,255,255,0.1)",
+                    color: "white",
+                    backdropFilter: "blur(10px)",
+                    boxSizing: "border-box",
+                  }}
+                />
+              </div>
+              {showBreedDropdown && breed && filteredBreeds.length > 0 && (
                 <div
                   style={{
                     position: "absolute",
@@ -523,25 +605,33 @@ export default function DogNameGeneratorGemini({
                     backdropFilter: "blur(10px)",
                     borderRadius: "8px",
                     marginTop: "4px",
-                    maxHeight: "200px",
+                    maxHeight: "250px",
                     overflowY: "auto",
                     zIndex: 10,
                     border: "1px solid rgba(255,255,255,0.2)",
+                    boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
                   }}
                 >
                   {filteredBreeds.map((dogBreed, index) => (
                     <button
                       key={index}
-                      onClick={() => setBreed(dogBreed)}
+                      onClick={() => {
+                        setBreed(dogBreed);
+                        setShowBreedDropdown(false);
+                      }}
                       style={{
                         width: "100%",
-                        padding: "12px",
+                        padding: "12px 16px",
                         border: "none",
                         background: "transparent",
                         color: "#333",
                         textAlign: "left",
                         cursor: "pointer",
                         fontSize: "14px",
+                        borderBottom:
+                          index < filteredBreeds.length - 1
+                            ? "1px solid rgba(0,0,0,0.1)"
+                            : "none",
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.background =
@@ -558,6 +648,7 @@ export default function DogNameGeneratorGemini({
               )}
             </div>
 
+            {/* Gender Selection */}
             <div>
               <label
                 style={{
@@ -622,13 +713,14 @@ export default function DogNameGeneratorGemini({
               </div>
             </div>
 
+            {/* Enhanced Name Inspiration */}
             <div>
               <label
                 style={{
                   display: "block",
                   fontSize: "14px",
                   fontWeight: "600",
-                  marginBottom: "8px",
+                  marginBottom: "12px",
                   color: "#f3f4f6",
                 }}
               >
@@ -638,7 +730,7 @@ export default function DogNameGeneratorGemini({
                 style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(2, 1fr)",
-                  gap: "8px",
+                  gap: "10px",
                 }}
               >
                 {preferences.map((pref) => (
@@ -646,13 +738,13 @@ export default function DogNameGeneratorGemini({
                     key={pref.value}
                     onClick={() => setPreference(pref.value)}
                     style={{
-                      padding: "12px 8px",
-                      borderRadius: "8px",
+                      padding: "16px 12px",
+                      borderRadius: "12px",
                       border: "none",
-                      fontSize: "14px",
+                      fontSize: "13px",
                       fontWeight: "600",
                       cursor: "pointer",
-                      transition: "all 0.2s",
+                      transition: "all 0.3s",
                       background:
                         preference === pref.value
                           ? "linear-gradient(45deg, #8b5cf6, #7c3aed)"
@@ -664,6 +756,10 @@ export default function DogNameGeneratorGemini({
                         preference === pref.value
                           ? "0 4px 12px rgba(139,92,246,0.3)"
                           : "none",
+                      textAlign: "center",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "4px",
                     }}
                     onMouseEnter={(e) => {
                       if (preference !== pref.value) {
@@ -680,7 +776,13 @@ export default function DogNameGeneratorGemini({
                       }
                     }}
                   >
-                    {pref.label}
+                    <div style={{ fontSize: "18px" }}>{pref.emoji}</div>
+                    <div style={{ fontSize: "14px", fontWeight: "700" }}>
+                      {pref.label.split(" ")[1]}
+                    </div>
+                    <div style={{ fontSize: "11px", opacity: "0.8" }}>
+                      {pref.description}
+                    </div>
                   </button>
                 ))}
               </div>
@@ -690,7 +792,7 @@ export default function DogNameGeneratorGemini({
               onClick={generateNames}
               disabled={isLoading || !breed || !gender || !preference}
               style={{
-                padding: "16px",
+                padding: "18px",
                 borderRadius: "12px",
                 border: "none",
                 fontSize: "18px",
@@ -699,7 +801,6 @@ export default function DogNameGeneratorGemini({
                   isLoading || !breed || !gender || !preference
                     ? "not-allowed"
                     : "pointer",
-                transition: "all 0.3s",
                 background:
                   isLoading || !breed || !gender || !preference
                     ? "rgba(255,255,255,0.3)"
@@ -759,7 +860,6 @@ export default function DogNameGeneratorGemini({
           <div
             style={{
               textAlign: "center",
-              animation: "fadeInUp 0.6s ease-out",
             }}
           >
             <div
@@ -784,7 +884,13 @@ export default function DogNameGeneratorGemini({
                   margin: "0",
                 }}
               >
-                Inspired by {preference} themes
+                {preference === "traditional" && "Popular & trending names"}
+                {preference === "millennial" && "90s kids nostalgia vibes"}
+                {preference === "genz" && "Internet culture & TikTok trends"}
+                {preference === "genalpha" && "Digital native & gaming culture"}
+                {!["traditional", "millennial", "genz", "genalpha"].includes(
+                  preference
+                ) && `Inspired by ${preference} themes`}
               </p>
             </div>
 
@@ -877,17 +983,6 @@ export default function DogNameGeneratorGemini({
         @keyframes spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
-        }
-        
-        @keyframes fadeInUp {
-          0% {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
         }
         
         @keyframes slideIn {
