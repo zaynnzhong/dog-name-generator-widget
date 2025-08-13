@@ -18,7 +18,7 @@ function initializeWidgets() {
     return;
   }
 
-  widgetContainers.forEach((container, index) => {
+  widgetContainers.forEach((container) => {
     if (container instanceof HTMLElement) {
       // Ensure we don't re-initialize the same widget
       if (container.dataset.initialized) {

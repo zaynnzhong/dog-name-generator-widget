@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  const config = {
+  const config: any = {
     plugins: [react()],
     // This is the crucial part to fix the "process is not defined" error.
     define: {
@@ -17,6 +17,22 @@ export default defineConfig(({ mode }) => {
         entry: 'src/widget.tsx',
         name: 'DogNameGeneratorWidget',
         fileName: 'dog-name-generator-widget',
+        formats: ['iife']
+      },
+      rollupOptions: {
+        external: [],
+        output: {
+          globals: {}
+        }
+      },
+      outDir: 'dist'
+    };
+  } else if (mode === 'quiz-widget') {
+    config.build = {
+      lib: {
+        entry: 'src/quiz-widget.tsx',
+        name: 'DogNameQuizWidget',
+        fileName: 'dog-name-quiz-widget',
         formats: ['iife']
       },
       rollupOptions: {
