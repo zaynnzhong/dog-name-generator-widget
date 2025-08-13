@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Unified Widget</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f0f2f5;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .test-section {
+        background: white;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🧪 Unified Widget Test</h1>
+
+      <div class="test-section">
+        <h2>🌐 CDN Version Test</h2>
+        <p>Widget loaded from jsDelivr CDN:</p>
+        <div
+          class="dog-name-unified-widget"
+          data-api-key="AIzaSyB-T35VfSzeKXHIVaEh5OINtGB_8PlqTtk"
+          data-cta-url="/test-page"
+        ></div>
+      </div>
+
+      <div class="test-section">
+        <h2>📱 Local Version Test</h2>
+        <p>Widget loaded from local dist file:</p>
+        <div
+          class="dog-name-unified-widget-local"
+          data-api-key="AIzaSyB-T35VfSzeKXHIVaEh5OINtGB_8PlqTtk"
+          data-cta-url="/test-page-local"
+        ></div>
+      </div>
+    </div>
+
+    <!-- CDN Version -->
+    <script src="https://cdn.jsdelivr.net/gh/zaynnzhong/dog-name-generator-widget@main/dist/dog-name-unified-widget.iife.js?v=1"></script>
+
+    <!-- Local Version for comparison -->
+    <script src="./dist/dog-name-unified-widget.iife.js"></script>
+
+    <script>
+      console.log("🧪 Testing unified widget...");
+
+      // Test CDN version
+      window.addEventListener("load", function () {
+        console.log("Page loaded, checking for widget functions...");
+
+        if (window.renderDogNameUnifiedWidget) {
+          console.log("✅ CDN widget function found!");
+          window.renderDogNameUnifiedWidget();
+        } else {
+          console.error("❌ CDN widget function NOT found!");
+        }
+
+        // Test local version for comparison
+        const localContainers = document.querySelectorAll(
+          ".dog-name-unified-widget-local"
+        );
+        if (localContainers.length > 0 && window.React && window.ReactDOM) {
+          console.log("✅ Local widget components available");
+        }
+      });
+
+      // Additional debugging
+      setTimeout(() => {
+        const widgets = document.querySelectorAll(".dog-name-unified-widget");
+        console.log(`Found ${widgets.length} widget containers`);
+
+        widgets.forEach((widget, index) => {
+          console.log(
+            `Widget ${index + 1}:`,
+            widget.innerHTML ? "Has content" : "Empty"
+          );
+        });
+      }, 2000);
+    </script>
+  </body>
+</html>
