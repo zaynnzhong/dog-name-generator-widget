@@ -5,7 +5,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Build outputs
-dist/
+# dist/ - Commented out so widget files can be deployed via CDN
 build/
 
 # Environment files
