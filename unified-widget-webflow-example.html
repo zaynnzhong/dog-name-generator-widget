@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unified Dog Name Widget - Webflow Integration</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f0f2f5;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      .note {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+      .code-block {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+        overflow-x: auto;
+      }
+      .code-block pre {
+        margin: 0;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+      }
+      .benefit {
+        background: #d4edda;
+        border: 1px solid #c3e6cb;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🐕 Unified Dog Name Widget - Webflow Ready!</h1>
+
+      <div class="benefit">
+        <h3>✨ Perfect for Webflow Sites!</h3>
+        <p>
+          <strong
+            >The CTA now links to YOUR Webflow pages instead of external
+            sites!</strong
+          >
+        </p>
+        <ul>
+          <li>
+            🎯 <strong>Keep users on your site</strong> - No external redirects
+          </li>
+          <li>
+            📈 <strong>Better SEO</strong> - Internal linking boosts page
+            authority
+          </li>
+          <li>
+            🔄 <strong>Higher conversion</strong> - Users stay in your funnel
+          </li>
+          <li>
+            ⚙️ <strong>Fully customizable</strong> - Point to any Webflow page
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <h3>🚀 How to Embed in Webflow:</h3>
+        <ol>
+          <li>
+            Create your destination page in Webflow (e.g., "/dog-names" or
+            "/premium-names")
+          </li>
+          <li>Add an HTML Embed element where you want the widget</li>
+          <li>
+            Paste the code below and customize the <code>data-cta-url</code>
+          </li>
+          <li>
+            Replace <code>YOUR_GEMINI_API_KEY</code> with your real API key
+          </li>
+          <li>Publish your site!</li>
+        </ol>
+      </div>
+
+      <h3>📋 Webflow HTML Embed Code:</h3>
+      <div class="code-block">
+        <pre>
+&lt;!-- Unified Dog Name Widget for Webflow --&gt;
+&lt;div 
+  class="dog-name-unified-widget" 
+  data-api-key="YOUR_GEMINI_API_KEY"
+  data-cta-url="/premium-dog-names"&gt;
+&lt;/div&gt;
+
+&lt;script src="https://cdn.jsdelivr.net/gh/zaynnzhong/dog-name-generator-widget@main/dist/dog-name-unified-widget.iife.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.addEventListener('load', function() {
+    if (window.renderDogNameUnifiedWidget) {
+      window.renderDogNameUnifiedWidget();
+    }
+  });
+&lt;/script&gt;</pre
+        >
+      </div>
+
+      <h3>🎯 CTA URL Examples:</h3>
+      <div class="code-block">
+        <pre>
+data-cta-url="/dog-names"           → Your main dog names page
+data-cta-url="/premium-names"        → Premium/paid names page  
+data-cta-url="/dog-community"        → Community/forum page
+data-cta-url="/breed-guides"         → Breed information page
+data-cta-url="/contact"              → Contact/signup page
+data-cta-url="/membership"           → Membership signup page</pre
+        >
+      </div>
+
+      <h3>🎨 Widget Features:</h3>
+      <ul>
+        <li>
+          <strong>🚀 Choice Screen:</strong> Users pick "Quick Generate" vs
+          "Take Quiz"
+        </li>
+        <li>
+          <strong>⚡ Quick Mode:</strong> 3 fields → instant names (30 seconds)
+        </li>
+        <li>
+          <strong>🏆 Quiz Mode:</strong> 7 questions → personality reveal +
+          signature name + AI names
+        </li>
+        <li>
+          <strong>🎯 Personality Types:</strong> Goofball (Biscuit), Protector
+          (Titan), Royal (Duchess), Clown (Pickles), Zen Master (Willow)
+        </li>
+        <li>
+          <strong>📱 CTA Integration:</strong> Drives traffic to YOUR Webflow
+          pages
+        </li>
+        <li>
+          <strong>📱 Mobile Responsive:</strong> Looks perfect on all devices
+        </li>
+      </ul>
+
+      <div class="benefit">
+        <h3>💡 Pro Tips for Webflow:</h3>
+        <ul>
+          <li>
+            <strong>Create a dedicated names page</strong> with more tools and
+            content
+          </li>
+          <li>
+            <strong>Add a newsletter signup</strong> on your CTA destination
+            page
+          </li>
+          <li>
+            <strong>Use different CTA URLs</strong> for different pages to track
+            performance
+          </li>
+          <li>
+            <strong>A/B test different landing pages</strong> to optimize
+            conversions
+          </li>
+          <li>
+            <strong>Add social sharing buttons</strong> on results pages for
+            viral growth
+          </li>
+        </ul>
+      </div>
+
+      <hr style="margin: 40px 0" />
+
+      <!-- Demo Widget -->
+      <h2 style="text-align: center">🎮 Live Demo Widget</h2>
+      <div class="note">
+        <strong>Note:</strong> This demo uses a placeholder API key. For the
+        widget to generate real names, you'll need to add your Google Gemini API
+        key. The CTA below will redirect to "/demo-page" (which doesn't exist in
+        this demo).
+      </div>
+
+      <div
+        class="dog-name-unified-widget"
+        data-api-key="demo-key"
+        data-cta-url="/demo-page"
+      ></div>
+    </div>
+
+    <!-- Load the unified widget script -->
+    <script src="./dist/dog-name-unified-widget.iife.js"></script>
+    <script>
+      window.addEventListener("load", function () {
+        if (window.renderDogNameUnifiedWidget) {
+          window.renderDogNameUnifiedWidget();
+        }
+      });
+    </script>
+  </body>
+</html>

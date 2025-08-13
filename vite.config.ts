@@ -43,6 +43,22 @@ export default defineConfig(({ mode }) => {
       },
       outDir: 'dist'
     };
+  } else if (mode === 'unified-widget') {
+    config.build = {
+      lib: {
+        entry: 'src/unified-widget.tsx',
+        name: 'DogNameUnifiedWidget',
+        fileName: 'dog-name-unified-widget',
+        formats: ['iife']
+      },
+      rollupOptions: {
+        external: [],
+        output: {
+          globals: {}
+        }
+      },
+      outDir: 'dist'
+    };
   }
 
   return config;

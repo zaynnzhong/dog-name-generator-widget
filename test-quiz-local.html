@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz Widget Local Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f0f2f5;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      .note {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🐕 Dog Name Quiz Widget - Local Test</h1>
+
+      <div class="note">
+        <strong>Note:</strong> You'll need to enter a real Google Gemini API key
+        in the widget to test name generation. Get one free at
+        <a href="https://aistudio.google.com/app/apikey" target="_blank"
+          >Google AI Studio</a
+        >.
+      </div>
+
+      <!-- Quiz Widget Container -->
+      <div class="dog-name-quiz-widget" data-api-key="test-key"></div>
+    </div>
+
+    <!-- Load the locally built quiz widget -->
+    <script src="./dist/dog-name-quiz-widget.iife.js"></script>
+    <script>
+      window.addEventListener("load", function () {
+        if (window.renderDogNameQuizWidget) {
+          window.renderDogNameQuizWidget();
+        } else {
+          console.error("Quiz widget not loaded");
+        }
+      });
+    </script>
+  </body>
+</html>

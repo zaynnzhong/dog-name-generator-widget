@@ -9,6 +9,7 @@
     "build": "tsc && vite build",
     "build-widget": "tsc && vite build --mode widget",
     "build-quiz-widget": "tsc && vite build --mode quiz-widget",
+    "build-unified-widget": "tsc && vite build --mode unified-widget",
     "preview": "vite preview",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "test": "echo \"No tests specified\" && exit 0",
