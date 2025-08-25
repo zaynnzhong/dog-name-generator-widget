@@ -616,7 +616,8 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
     return (
       <div
         style={{
-          maxWidth: "600px",
+          maxWidth: "1180px",
+          width: "100%",
           margin: "0 auto",
           padding: "32px 24px",
           fontFamily:
@@ -647,8 +648,8 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "20px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "24px",
             marginBottom: "32px",
           }}
         >
@@ -699,26 +700,46 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
             style={{
               padding: "24px 20px",
               borderRadius: "16px",
-              border: "none",
               cursor: "pointer",
-              background: "linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%)",
+              background: "linear-gradient(135deg, #ff8a65 60%, #ffb366 100%)",
               color: "white",
               textAlign: "center",
               transition: "all 0.3s",
-              boxShadow: "0 8px 20px rgba(253, 121, 168, 0.3)",
+              boxShadow: "0 8px 20px rgba(255, 138, 101, 0.4)",
+              border: "2px solid rgba(255,255,255,0.2)",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-4px)";
               e.currentTarget.style.boxShadow =
-                "0 12px 30px rgba(253, 121, 168, 0.4)";
+                "0 12px 30px rgba(255, 138, 101, 0.5)";
+              e.currentTarget.style.border = "2px solid rgba(255,255,255,0.4)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
               e.currentTarget.style.boxShadow =
-                "0 8px 20px rgba(253, 121, 168, 0.3)";
+                "0 8px 20px rgba(255, 138, 101, 0.4)";
+              e.currentTarget.style.border = "2px solid rgba(255,255,255,0.2)";
             }}
           >
-            <Trophy size={32} style={{ marginBottom: "12px" }} />
+            <div style={{ position: "relative" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "-8px",
+                  right: "-8px",
+                  background: "rgba(255,255,255,0.9)",
+                  color: "#ff8a65",
+                  fontSize: "10px",
+                  fontWeight: "700",
+                  padding: "4px 8px",
+                  borderRadius: "12px",
+                  border: "1px solid rgba(255,255,255,0.3)",
+                }}
+              >
+                ⭐ POPULAR
+              </div>
+              <Trophy size={32} style={{ marginBottom: "12px" }} />
+            </div>
             <h3
               style={{
                 fontSize: "18px",
@@ -830,7 +851,8 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
     return (
       <div
         style={{
-          maxWidth: "600px",
+          maxWidth: "1180px",
+          width: "100%",
           margin: "0 auto",
           padding: "24px",
           fontFamily:
@@ -856,7 +878,7 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
             fontSize: "28px",
             fontWeight: "700",
             margin: "0 0 8px 0",
-            color: "#2d3436",
+            color: generationMode === "quick" ? "#55a3ff" : "#f66220",
           }}
         >
           {generationMode === "quick"
@@ -882,11 +904,11 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
         {generationMode === "quiz" && personalityType && (
           <div
             style={{
-              background: "linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%)",
+              background: "linear-gradient(135deg, #f66220 0%, #ff8a65 100%)",
               borderRadius: "16px",
               padding: "20px",
               marginBottom: "24px",
-              border: "1px solid rgba(253, 121, 168, 0.2)",
+              border: "1px solid rgba(246, 98, 32, 0.2)",
               color: "white",
             }}
           >
@@ -935,63 +957,78 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
             fontSize: "20px",
             fontWeight: "700",
             margin: "0 0 16px 0",
-            color: "#2d3436",
+            color: generationMode === "quiz" ? "#f66220" : "#55a3ff",
           }}
         >
           {generationMode === "quiz"
             ? "🎉 More Perfect Names"
             : "🎉 Your Perfect Names"}
         </h3>
+        <p
+          style={{
+            fontSize: "16px",
+            color: "#636e72",
+            margin: "0 0 24px 0",
+            lineHeight: "1.4",
+          }}
+        >
+          {generationMode === "quiz"
+            ? "Here are your personalized name suggestions based on your dog's unique personality!"
+            : "Here are your perfect dog names based on your preferences!"}
+        </p>
 
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "12px",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gap: "20px",
             marginBottom: "24px",
+            maxWidth: "100%",
           }}
         >
           {generatedNames.map((name, index) => (
             <div
               key={index}
               style={{
-                padding: "16px 20px",
-                background: "#f8f9fa",
-                borderRadius: "12px",
-                fontSize: "18px",
-                fontWeight: "600",
+                padding: "20px",
+                background: "white",
+                borderRadius: "16px",
+                fontSize: "20px",
+                fontWeight: "700",
                 color: "#2d3436",
+                textAlign: "center",
+                border: "2px solid #e9ecef",
+                animation: `slideIn 0.4s ease-out ${index * 0.1}s both`,
+                transition: "all 0.3s",
+                cursor: "pointer",
+                minHeight: "80px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
-                border: "1px solid #e9ecef",
-                animation: `slideIn 0.4s ease-out ${index * 0.1}s both`,
-                transition: "all 0.2s",
+                justifyContent: "center",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#e9ecef";
-                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.background = "white";
+                e.currentTarget.style.transform =
+                  "translateY(-4px) scale(1.02)";
+                e.currentTarget.style.boxShadow =
+                  generationMode === "quiz"
+                    ? "0 8px 25px rgba(246, 98, 32, 0.2)"
+                    : "0 8px 25px rgba(85, 163, 255, 0.2)";
+                e.currentTarget.style.borderColor =
+                  generationMode === "quiz" ? "#f66220" : "#55a3ff";
+                e.currentTarget.style.color =
+                  generationMode === "quiz" ? "#f66220" : "#55a3ff";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = "#f8f9fa";
-                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.background = "white";
+                e.currentTarget.style.transform = "translateY(0) scale(1)";
+                e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
+                e.currentTarget.style.borderColor = "#e9ecef";
+                e.currentTarget.style.color = "#2d3436";
               }}
             >
-              <span>{name}</span>
-              <Heart
-                size={20}
-                style={{
-                  color: "#fd79a8",
-                  cursor: "pointer",
-                  transition: "transform 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "scale(1.2)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "scale(1)";
-                }}
-              />
+              <span style={{ transition: "color 0.2s ease" }}>{name}</span>
             </div>
           ))}
         </div>
@@ -1000,18 +1037,19 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
         {generationMode === "quiz" && personalityType && (
           <div
             style={{
-              background: "#f8f9fa",
+              background: "white",
               borderRadius: "16px",
               padding: "20px",
               marginBottom: "20px",
-              border: "1px solid #e9ecef",
+              border: "2px solid #e9ecef",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
             }}
           >
             <h4
               style={{
                 fontSize: "18px",
                 margin: "0 0 8px 0",
-                color: "#2d3436",
+                color: "#f66220",
                 fontWeight: "700",
               }}
             >
@@ -1036,20 +1074,20 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
                 fontSize: "16px",
                 fontWeight: "600",
                 cursor: "pointer",
-                background: "linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%)",
+                background: "linear-gradient(135deg, #f66220 0%, #ff8a65 100%)",
                 color: "white",
                 transition: "all 0.2s",
-                boxShadow: "0 4px 15px rgba(253, 121, 168, 0.3)",
+                boxShadow: "0 4px 15px rgba(246, 98, 32, 0.3)",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-2px)";
                 e.currentTarget.style.boxShadow =
-                  "0 6px 20px rgba(253, 121, 168, 0.4)";
+                  "0 6px 20px rgba(246, 98, 32, 0.4)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
                 e.currentTarget.style.boxShadow =
-                  "0 4px 15px rgba(253, 121, 168, 0.3)";
+                  "0 4px 15px rgba(246, 98, 32, 0.3)";
               }}
             >
               🎉 Explore More Names & Features
@@ -1072,8 +1110,8 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
               color: "#636e72",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "#fd79a8";
-              e.currentTarget.style.color = "#fd79a8";
+              e.currentTarget.style.borderColor = "#f66220";
+              e.currentTarget.style.color = "#f66220";
               e.currentTarget.style.transform = "translateY(-2px)";
             }}
             onMouseLeave={(e) => {
@@ -1106,7 +1144,8 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
       <>
         <div
           style={{
-            maxWidth: "600px",
+            maxWidth: "1180px",
+            width: "100%",
             margin: "0 auto",
             padding: "24px",
             fontFamily:
@@ -1127,13 +1166,13 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
                 marginBottom: "8px",
               }}
             >
-              <Zap size={32} style={{ color: "#00b894" }} />
+              <Zap size={32} style={{ color: "#55a3ff" }} />
               <h1
                 style={{
                   fontSize: "28px",
                   fontWeight: "700",
                   margin: "0",
-                  color: "#2d3436",
+                  color: "#55a3ff",
                 }}
               >
                 Quick Generate
@@ -1146,7 +1185,7 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
               onClick={resetToChoice}
               style={{
                 fontSize: "12px",
-                color: "#74b9ff",
+                color: "#55a3ff",
                 margin: "8px 0 0 0",
                 background: "none",
                 border: "none",
@@ -1194,7 +1233,7 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
                   }}
                   onFocus={(e) => {
                     setShowBreedDropdown(true);
-                    e.currentTarget.style.borderColor = "#fd79a8";
+                    e.currentTarget.style.borderColor = "#55a3ff";
                   }}
                   onBlur={(e) => {
                     setTimeout(() => setShowBreedDropdown(false), 200);
@@ -1297,19 +1336,19 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
                       padding: "14px",
                       borderRadius: "12px",
                       border:
-                        gender === g ? "2px solid #00b894" : "2px solid #ddd",
+                        gender === g ? "2px solid #55a3ff" : "2px solid #ddd",
                       fontSize: "16px",
                       fontWeight: "600",
                       cursor: "pointer",
                       transition: "all 0.2s",
-                      background: gender === g ? "#00b894" : "white",
+                      background: gender === g ? "#55a3ff" : "white",
                       color: gender === g ? "white" : "#636e72",
                       textTransform: "capitalize",
                     }}
                     onMouseEnter={(e) => {
                       if (gender !== g) {
-                        e.currentTarget.style.borderColor = "#00b894";
-                        e.currentTarget.style.color = "#00b894";
+                        e.currentTarget.style.borderColor = "#55a3ff";
+                        e.currentTarget.style.color = "#55a3ff";
                       }
                     }}
                     onMouseLeave={(e) => {
@@ -1354,14 +1393,14 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
                       borderRadius: "12px",
                       border:
                         preference === pref.value
-                          ? "2px solid #fd79a8"
+                          ? "2px solid #55a3ff"
                           : "2px solid #ddd",
                       fontSize: "13px",
                       fontWeight: "600",
                       cursor: "pointer",
                       transition: "all 0.3s",
                       background:
-                        preference === pref.value ? "#fd79a8" : "white",
+                        preference === pref.value ? "#55a3ff" : "white",
                       color: preference === pref.value ? "white" : "#636e72",
                       textAlign: "center",
                       display: "flex",
@@ -1370,8 +1409,8 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
                     }}
                     onMouseEnter={(e) => {
                       if (preference !== pref.value) {
-                        e.currentTarget.style.borderColor = "#fd79a8";
-                        e.currentTarget.style.color = "#fd79a8";
+                        e.currentTarget.style.borderColor = "#55a3ff";
+                        e.currentTarget.style.color = "#55a3ff";
                       }
                     }}
                     onMouseLeave={(e) => {
@@ -1418,7 +1457,7 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
                 background:
                   isLoading || !breed || !gender || !preference
                     ? "#d1d5db"
-                    : "#F56220",
+                    : "#55a3ff",
                 color: "white",
                 display: "flex",
                 alignItems: "center",
@@ -1428,21 +1467,21 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
                 transition: "all 0.2s",
                 boxShadow:
                   !isLoading && breed && gender && preference
-                    ? "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+                    ? "0 4px 6px -1px rgba(85, 163, 255, 0.3), 0 2px 4px -1px rgba(85, 163, 255, 0.2)"
                     : "none",
               }}
               onMouseEnter={(e) => {
                 if (!isLoading && breed && gender && preference) {
-                  e.currentTarget.style.background = "#e55a1d";
+                  e.currentTarget.style.background = "#4a90e2";
                   e.currentTarget.style.boxShadow =
-                    "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)";
+                    "0 10px 15px -3px rgba(85, 163, 255, 0.4), 0 4px 6px -2px rgba(85, 163, 255, 0.3)";
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isLoading && breed && gender && preference) {
-                  e.currentTarget.style.background = "#F56220";
+                  e.currentTarget.style.background = "#55a3ff";
                   e.currentTarget.style.boxShadow =
-                    "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)";
+                    "0 4px 6px -1px rgba(85, 163, 255, 0.3), 0 2px 4px -1px rgba(85, 163, 255, 0.2)";
                 }
               }}
             >
@@ -1494,7 +1533,8 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
       <>
         <div
           style={{
-            maxWidth: "600px",
+            maxWidth: "1180px",
+            width: "100%",
             margin: "0 auto",
             padding: "24px",
             fontFamily:
@@ -1607,9 +1647,9 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
           {/* Answer Options */}
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "12px",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: "16px",
               marginBottom: "32px",
             }}
           >
@@ -1620,23 +1660,26 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
                   handleQuizAnswerSelect(currentQ.id, option.value)
                 }
                 style={{
-                  padding: "16px 20px",
+                  padding: "14px 16px",
                   borderRadius: "12px",
                   border:
                     currentAnswer === option.value
                       ? "2px solid #F56220"
                       : "2px solid #e5e7eb",
-                  fontSize: "16px",
+                  fontSize: "15px",
                   fontWeight: "600",
                   cursor: "pointer",
                   transition: "all 0.2s",
                   background:
                     currentAnswer === option.value ? "#F56220" : "white",
                   color: currentAnswer === option.value ? "white" : "#374151",
-                  textAlign: "left",
+                  textAlign: "center",
                   display: "flex",
+                  flexDirection: "column",
                   alignItems: "center",
-                  gap: "12px",
+                  gap: "8px",
+                  minHeight: "80px",
+                  justifyContent: "center",
                 }}
                 onMouseEnter={(e) => {
                   if (currentAnswer !== option.value) {
