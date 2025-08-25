@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Heart,
   Sparkles,
   Dog,
   Key,

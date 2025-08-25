@@ -25,13 +25,13 @@ function initializeWidgets() {
         return;
       }
 
-      const apiKey = container.dataset.apiKey;
+      const apiKey = container.dataset.apiKey || (window as any).GEMINI_API_KEY;
 
       if (!apiKey) {
         container.innerHTML =
-          '<div style="padding: 20px; background: #fee2e2; color: #dc2626; border-radius: 8px;"><b>Error:</b> API key is missing. Please add the `data-api-key` attribute to your div.</div>';
+          '<div style="padding: 20px; background: #fee2e2; color: #dc2626; border-radius: 8px;"><b>Error:</b> API key is missing. Please add the `data-api-key` attribute to your div or set window.GEMINI_API_KEY in your header code.</div>';
         console.error(
-          "Dog Name Generator: Missing data-api-key attribute on container:",
+          "Dog Name Generator: Missing API key. Please add data-api-key attribute or set window.GEMINI_API_KEY:",
           container
         );
         return;

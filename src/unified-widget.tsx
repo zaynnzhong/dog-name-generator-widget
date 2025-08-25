@@ -10,7 +10,7 @@ function initializeUnifiedWidgets() {
 
   containers.forEach((container) => {
     try {
-      const apiKey = container.getAttribute("data-api-key") || undefined;
+      const apiKey = container.getAttribute("data-api-key") || (window as any).GEMINI_API_KEY || undefined;
       const ctaUrl = container.getAttribute("data-cta-url") || "/dog-names";
 
       const root = ReactDOM.createRoot(container as HTMLElement);

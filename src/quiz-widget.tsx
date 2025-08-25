@@ -10,7 +10,7 @@ function initializeQuizWidgets() {
 
   containers.forEach((container) => {
     try {
-      const apiKey = container.getAttribute("data-api-key") || undefined;
+      const apiKey = container.getAttribute("data-api-key") || (window as any).GEMINI_API_KEY || undefined;
 
       const root = ReactDOM.createRoot(container as HTMLElement);
       root.render(React.createElement(DogNameQuizWidget, { apiKey }));
