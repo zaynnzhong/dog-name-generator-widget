@@ -757,20 +757,6 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
           </button>
         </div>
 
-        <button
-          onClick={() => setShowApiKeyInput(true)}
-          style={{
-            fontSize: "12px",
-            color: "#74b9ff",
-            margin: "0",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            textDecoration: "underline",
-          }}
-        >
-          Change API Key
-        </button>
       </div>
     );
   }
