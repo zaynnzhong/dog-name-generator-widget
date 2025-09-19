@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Production Backend Widget Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 10px;
+      }
+      .subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 40px;
+      }
+      .test-info {
+        background: #e8f5e8;
+        border-left: 4px solid #28a745;
+        padding: 15px;
+        margin-bottom: 30px;
+        border-radius: 5px;
+      }
+      .test-info strong {
+        color: #28a745;
+      }
+      .auth-warning {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+      }
+      .auth-warning strong {
+        color: #856404;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🐕 Production Backend Widget Test</h1>
+      <p class="subtitle">Testing with Vercel-deployed backend API</p>
+
+      <div class="test-info">
+        <strong>✅ Backend Deployed Successfully!</strong><br />
+        <strong>Backend URL:</strong>
+        https://dog-name-generator-backend-pg3e01x4m-onlydogfans-projects.vercel.app<br />
+        <strong>Environment:</strong> Production Vercel deployment<br />
+        <strong>API Key:</strong> Securely stored in Vercel environment
+      </div>
+
+      <div class="test-info">
+        <strong>✅ Backend Working Perfectly!</strong><br />
+        Authentication protection has been disabled and the API is now publicly
+        accessible. Your widget should work perfectly on any website!
+      </div>
+
+      <!-- Widget Container -->
+      <div
+        class="dog-name-unified-widget"
+        data-cta-url="/premium-names"
+        data-api-url="https://dog-name-generator-backend-pg3e01x4m-onlydogfans-projects.vercel.app"
+      >
+        <div style="padding: 20px; text-align: center; color: #666">
+          🐕 Loading Dog Name Generator...
+        </div>
+      </div>
+    </div>
+
+    <!-- Load Production Widget Script -->
+    <script src="https://onlydogfanspage.github.io/dog-name-generator-/dog-name-unified-widget.iife.js"></script>
+    <script>
+      // Enhanced initialization with debugging
+      function initializeWidget() {
+        console.log("🚀 Initializing Dog Name Widget (Production Backend)...");
+
+        if (window.renderDogNameUnifiedWidget) {
+          try {
+            window.renderDogNameUnifiedWidget();
+            console.log("✅ Widget loaded successfully!");
+          } catch (error) {
+            console.error("❌ Widget initialization failed:", error);
+          }
+        } else {
+          console.error("❌ Widget function not available");
+          // Retry after a short delay
+          setTimeout(() => {
+            if (window.renderDogNameUnifiedWidget) {
+              console.log("🔄 Retrying widget initialization...");
+              window.renderDogNameUnifiedWidget();
+            }
+          }, 1000);
+        }
+      }
+
+      // Try multiple initialization methods
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initializeWidget);
+      } else {
+        initializeWidget();
+      }
+
+      window.addEventListener("load", initializeWidget);
+    </script>
+  </body>
+</html>

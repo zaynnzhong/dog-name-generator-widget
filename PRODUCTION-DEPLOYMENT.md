@@ -1,16 +1,19 @@
 # 🚀 Production Deployment Guide
 
 ## Overview
+
 This guide helps you deploy the Dog Name Generator Widget with backend API integration for production use.
 
 ## 📦 What You Need to Deploy
 
 ### 1. Frontend (GitHub Pages) ✅ Already Set Up
+
 - **Repository:** https://github.com/onlydogfanspage/dog-name-generator-
 - **URL:** https://onlydogfanspage.github.io/dog-name-generator-/
 - **Widget File:** `dog-name-unified-widget.iife.js`
 
 ### 2. Backend API (Needs Deployment)
+
 - **Files:** `/backend/` folder
 - **Purpose:** Handles Gemini API calls securely
 - **Recommended Services:** Vercel, Railway, Heroku, or Netlify Functions
@@ -20,17 +23,20 @@ This guide helps you deploy the Dog Name Generator Widget with backend API integ
 ### Option 1: Vercel (Recommended - Free Tier Available)
 
 1. **Install Vercel CLI:**
+
    ```bash
    npm i -g vercel
    ```
 
 2. **Deploy backend:**
+
    ```bash
    cd backend
    vercel
    ```
 
 3. **Set environment variable:**
+
    ```bash
    vercel env add GEMINI_API_KEY
    # Enter your API key: AIzaSyB-T35VfSzeKXHIVaEh5OINtGB_8PlqTtk
@@ -50,11 +56,13 @@ This guide helps you deploy the Dog Name Generator Widget with backend API integ
 ### Option 3: Heroku
 
 1. **Create Heroku app:**
+
    ```bash
    heroku create your-dog-names-api
    ```
 
 2. **Set environment variable:**
+
    ```bash
    heroku config:set GEMINI_API_KEY=AIzaSyB-T35VfSzeKXHIVaEh5OINtGB_8PlqTtk
    ```
@@ -91,16 +99,19 @@ Once your backend is deployed, use this embed code on your website:
 ```
 
 **Replace:**
-- `YOUR-BACKEND-URL.com` with your deployed backend URL
+
+- `YOUR-BACKEND-URL.com` with your deployed backend URL: `https://dog-name-generator-backend-pg3e01x4m-onlydogfans-projects.vercel.app`
 - `/premium-names` with your target page URL
 
 ## 🔧 Configuration Options
 
 ### Widget Attributes:
+
 - `data-cta-url`: Where users go after generating names
 - `data-api-url`: Your backend API endpoint
 
 ### Backend Environment Variables:
+
 - `GEMINI_API_KEY`: Your Google Gemini API key
 - `PORT`: Server port (auto-detected on most platforms)
 
@@ -116,11 +127,13 @@ Once your backend is deployed, use this embed code on your website:
 ## 🧪 Testing Your Deployment
 
 1. **Test backend health:**
+
    ```bash
    curl https://YOUR-BACKEND-URL.com/health
    ```
 
 2. **Test name generation:**
+
    ```bash
    curl -X POST https://YOUR-BACKEND-URL.com/api/generate-names \
         -H "Content-Type: application/json" \
@@ -145,5 +158,6 @@ Once your backend is deployed, use this embed code on your website:
 If you need help with deployment, check the backend logs or test the API endpoints directly.
 
 Example successful deployment URLs:
+
 - Backend: `https://dog-names-api.vercel.app`
 - Frontend: `https://onlydogfanspage.github.io/dog-name-generator-/`
