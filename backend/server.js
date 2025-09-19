@@ -12,7 +12,11 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'http://localhost:8000',
-    'https://onlydogfanspage.github.io'
+    'https://onlydogfanspage.github.io',
+    'https://zaynnzhong.github.io',
+    /^https:\/\/.*\.vercel\.app$/,
+    /^https:\/\/.*\.netlify\.app$/,
+    /^https:\/\/.*\.github\.io$/
   ]
 }));
 app.use(express.json());

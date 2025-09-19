@@ -7,7 +7,7 @@
 <div
   class="dog-name-unified-widget"
   data-cta-url="/your-target-page"
-  data-api-url="https://dog-name-generator-backend-pg3e01x4m-onlydogfans-projects.vercel.app"
+  data-api-url="https://dog-name-generator-backend-d40b1jow7-onlydogfans-projects.vercel.app"
 ></div>
 
 <script src="https://zaynnzhong.github.io/dog-name-generator-widget/dog-name-unified-widget.iife.js"></script>
@@ -30,7 +30,7 @@
 <!-- Unified Dog Name Widget with Debug Mode -->
 <div
   class="dog-name-unified-widget"
-  data-api-url="https://dog-name-generator-backend-pg3e01x4m-onlydogfans-projects.vercel.app"
+  data-api-url="https://dog-name-generator-backend-d40b1jow7-onlydogfans-projects.vercel.app"
   data-cta-url="/premium-names"
 >
   <div style="padding: 20px; text-align: center; color: #666;">
