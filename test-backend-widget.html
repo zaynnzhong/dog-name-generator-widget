@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Widget Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        .test-info {
+            background: #e8f5e8;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        .test-info strong {
+            color: #28a745;
+        }
+        .backend-status {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-ok { background: #28a745; }
+        .status-error { background: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐕 Backend Widget Test</h1>
+        <p class="subtitle">Testing with automatic API key handling via backend</p>
+
+        <div class="test-info">
+            <strong>✅ No API Key Required!</strong><br>
+            <strong>Backend API:</strong> http://localhost:3001<br>
+            <strong>Widget Mode:</strong> Backend-powered (API key handled server-side)<br>
+            <strong>CTA URL:</strong> /premium-names (you can change this)
+        </div>
+
+        <div class="backend-status" id="backendStatus">
+            <span class="status-indicator status-error"></span>
+            Checking backend status...
+        </div>
+
+        <!-- Widget Container -->
+        <div
+            class="dog-name-unified-widget"
+            data-cta-url="/premium-names"
+            data-api-url="http://localhost:3001"
+        >
+            <div style="padding: 20px; text-align: center; color: #666;">
+                🐕 Loading Dog Name Generator...
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Local Widget Script -->
+    <script src="./dist/dog-name-unified-widget.iife.js"></script>
+    <script>
+        // Check backend status
+        async function checkBackendStatus() {
+            const statusDiv = document.getElementById('backendStatus');
+            try {
+                const response = await fetch('http://localhost:3001/health');
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDiv.innerHTML = `
+                        <span class="status-indicator status-ok"></span>
+                        Backend is running! ${data.message}
+                    `;
+                } else {
+                    throw new Error('Backend not responding');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <span class="status-indicator status-error"></span>
+                    Backend is offline. Please start the backend server: <code>cd backend && npm start</code>
+                `;
+            }
+        }
+
+        // Enhanced initialization with debugging
+        function initializeWidget() {
+            console.log("🚀 Initializing Dog Name Widget (Backend Mode)...");
+
+            if (window.renderDogNameUnifiedWidget) {
+                try {
+                    window.renderDogNameUnifiedWidget();
+                    console.log("✅ Widget loaded successfully!");
+                } catch (error) {
+                    console.error("❌ Widget initialization failed:", error);
+                }
+            } else {
+                console.error("❌ Widget function not available");
+                // Retry after a short delay
+                setTimeout(() => {
+                    if (window.renderDogNameUnifiedWidget) {
+                        console.log("🔄 Retrying widget initialization...");
+                        window.renderDogNameUnifiedWidget();
+                    }
+                }, 1000);
+            }
+        }
+
+        // Check backend status on load
+        checkBackendStatus();
+
+        // Try multiple initialization methods
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initializeWidget);
+        } else {
+            initializeWidget();
+        }
+
+        window.addEventListener("load", initializeWidget);
+    </script>
+</body>
+</html>

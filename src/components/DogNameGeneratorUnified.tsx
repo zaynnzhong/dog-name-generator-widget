@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Sparkles,
   Dog,
-  Key,
   Search,
   ArrowRight,
   Trophy,
@@ -10,8 +9,8 @@ import {
 } from "lucide-react";
 
 interface DogNameGeneratorUnifiedProps {
-  apiKey?: string;
   ctaUrl?: string; // Allow custom CTA URL
+  apiUrl?: string; // Backend API URL
 }
 
 interface QuizAnswers {
@@ -25,8 +24,8 @@ interface QuizAnswers {
 }
 
 export default function DogNameGeneratorUnified({
-  apiKey: propApiKey,
   ctaUrl = "/dog-names", // Default to a relative Webflow page
+  apiUrl = "http://localhost:3001", // Default to local backend
 }: DogNameGeneratorUnifiedProps) {
   // Mode selection: 'choose' | 'quick' | 'quiz'
   const [mode, setMode] = useState<"choose" | "quick" | "quiz">("choose");
@@ -53,8 +52,6 @@ export default function DogNameGeneratorUnified({
   const [generatedNames, setGeneratedNames] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  const [apiKey, setApiKey] = useState(propApiKey || "");
-  const [showApiKeyInput, setShowApiKeyInput] = useState(!propApiKey);
   const [generationMode, setGenerationMode] = useState<"quick" | "quiz">(
     "quick"
   );
@@ -264,12 +261,6 @@ export default function DogNameGeneratorUnified({
     .filter((dogBreed) => dogBreed.toLowerCase().includes(breed.toLowerCase()))
     .slice(0, 10);
 
-  const handleApiKeySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (apiKey.trim()) {
-      setShowApiKeyInput(false);
-    }
-  };
 
   const handleQuizAnswerSelect = (questionId: string, value: string) => {
     setQuizAnswers((prev) => ({ ...prev, [questionId]: value }));
@@ -347,81 +338,32 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
   };
 
   const generateNames = async (prompt: string) => {
-    if (!apiKey) {
-      alert("API key is required. Please add your Gemini API key first.");
-      setShowApiKeyInput(true);
-      return;
-    }
-
     setIsLoading(true);
     setShowResults(false);
 
     try {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: {
-              temperature: 0.9,
-              topK: 1,
-              topP: 1,
-              maxOutputTokens: 2048,
-            },
-            safetySettings: [
-              {
-                category: "HARM_CATEGORY_HARASSMENT",
-                threshold: "BLOCK_MEDIUM_AND_ABOVE",
-              },
-              {
-                category: "HARM_CATEGORY_HATE_SPEECH",
-                threshold: "BLOCK_MEDIUM_AND_ABOVE",
-              },
-              {
-                category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                threshold: "BLOCK_MEDIUM_AND_ABOVE",
-              },
-              {
-                category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-                threshold: "BLOCK_MEDIUM_AND_ABOVE",
-              },
-            ],
-          }),
-        }
-      );
+      const response = await fetch(`${apiUrl}/api/generate-names`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
 
       if (!response.ok) {
-        if (response.status === 400) {
-          throw new Error("Invalid API key. Please check your Gemini API key.");
-        }
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
-      if (generatedText) {
-        const names = generatedText
-          .split("\n")
-          .filter((name: string) => name.trim())
-          .slice(0, 5);
-        setGeneratedNames(names);
+      if (data.names && data.names.length > 0) {
+        setGeneratedNames(data.names);
         setShowResults(true);
       } else {
         throw new Error("No names generated");
       }
     } catch (error) {
       console.error("Error generating names:", error);
-      if (error instanceof Error && error.message.includes("API key")) {
-        alert(
-          "Invalid API key. Please check your Gemini API key and try again."
-        );
-        setShowApiKeyInput(true);
-      } else {
-        alert("Failed to generate names. Please try again.");
-      }
+      alert("Failed to generate names. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -446,169 +388,6 @@ Generate 5 creative dog names that match this personality profile. Make them ${q
     });
   };
 
-  // API Key Input Screen
-  if (showApiKeyInput) {
-    return (
-      <div
-        style={{
-          maxWidth: "500px",
-          margin: "0 auto",
-          padding: "24px",
-          fontFamily:
-            "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-          background: "white",
-          borderRadius: "20px",
-          boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-          border: "1px solid rgba(0,0,0,0.05)",
-          color: "#2d3436",
-        }}
-      >
-        <div style={{ textAlign: "center", marginBottom: "24px" }}>
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "12px",
-              marginBottom: "8px",
-            }}
-          >
-            <Key size={32} style={{ color: "#fd79a8" }} />
-            <h1
-              style={{
-                fontSize: "28px",
-                fontWeight: "700",
-                margin: "0",
-                color: "#2d3436",
-              }}
-            >
-              Setup Required
-            </h1>
-          </div>
-          <p
-            style={{ fontSize: "16px", color: "#636e72", margin: "0 0 8px 0" }}
-          >
-            Enter your free Google Gemini API key to start! 🚀
-          </p>
-          <p style={{ fontSize: "14px", color: "#74b9ff", margin: "0" }}>
-            ✨ 100% Free • No sign-up required • Works instantly
-          </p>
-        </div>
-
-        <form onSubmit={handleApiKeySubmit} style={{ marginBottom: "16px" }}>
-          <label
-            style={{
-              display: "block",
-              fontSize: "14px",
-              fontWeight: "600",
-              marginBottom: "8px",
-              color: "#2d3436",
-            }}
-          >
-            Google Gemini API Key
-          </label>
-          <input
-            type="password"
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            placeholder="AIza..."
-            style={{
-              width: "100%",
-              padding: "14px 16px",
-              borderRadius: "12px",
-              border: "2px solid #ddd",
-              fontSize: "16px",
-              outline: "none",
-              background: "white",
-              color: "#2d3436",
-              boxSizing: "border-box",
-              marginBottom: "16px",
-              transition: "border-color 0.2s",
-            }}
-            onFocus={(e) => (e.currentTarget.style.borderColor = "#fd79a8")}
-            onBlur={(e) => (e.currentTarget.style.borderColor = "#ddd")}
-            required
-          />
-          <button
-            type="submit"
-            style={{
-              width: "100%",
-              padding: "14px",
-              borderRadius: "12px",
-              border: "none",
-              fontSize: "16px",
-              fontWeight: "600",
-              cursor: "pointer",
-              background: "linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%)",
-              color: "white",
-              transition: "all 0.2s",
-              boxShadow: "0 4px 15px rgba(253, 121, 168, 0.3)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.boxShadow =
-                "0 6px 20px rgba(253, 121, 168, 0.4)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow =
-                "0 4px 15px rgba(253, 121, 168, 0.3)";
-            }}
-          >
-            🚀 Start Generating Names
-          </button>
-        </form>
-
-        <div
-          style={{
-            background: "#f8f9fa",
-            borderRadius: "12px",
-            padding: "16px",
-            border: "1px solid #e9ecef",
-          }}
-        >
-          <h3
-            style={{ fontSize: "16px", margin: "0 0 12px 0", color: "#fd79a8" }}
-          >
-            📝 How to get your FREE API key:
-          </h3>
-          <ol
-            style={{
-              fontSize: "14px",
-              color: "#636e72",
-              margin: "0",
-              paddingLeft: "20px",
-            }}
-          >
-            <li style={{ marginBottom: "8px" }}>
-              Visit{" "}
-              <a
-                href="https://aistudio.google.com/app/apikey"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: "#fd79a8",
-                  textDecoration: "none",
-                  fontWeight: "600",
-                }}
-              >
-                Google AI Studio
-              </a>
-            </li>
-            <li style={{ marginBottom: "8px" }}>Click "Create API Key"</li>
-            <li style={{ marginBottom: "8px" }}>
-              Copy the key that starts with "AIza..."
-            </li>
-            <li>Paste it above and start generating!</li>
-          </ol>
-          <p
-            style={{ fontSize: "12px", color: "#b2bec3", margin: "12px 0 0 0" }}
-          >
-            🔒 Your API key stays private and is only used to generate names
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   // Mode Selection Screen
   if (mode === "choose") {

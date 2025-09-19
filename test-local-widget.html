@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Widget Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        .test-info {
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        .test-info strong {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐕 Local Widget Test</h1>
+        <p class="subtitle">Testing the dog name generator widget locally</p>
+
+        <div class="test-info">
+            <strong>Test Mode:</strong> Using local built widget file<br>
+            <strong>Widget File:</strong> dist/dog-name-unified-widget.iife.js<br>
+            <strong>API Key:</strong> Configured via data attribute<br>
+            <strong>CTA URL:</strong> Set to /premium-names (you can change this)
+        </div>
+
+        <!-- Widget Container -->
+        <div
+            class="dog-name-unified-widget"
+            data-api-key="AIzaSyB-T35VfSzeKXHIVaEh5OINtGB_8PlqTtk"
+            data-cta-url="/premium-names"
+        >
+            <div style="padding: 20px; text-align: center; color: #666;">
+                🐕 Loading Dog Name Generator...
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Local Widget Script -->
+    <script src="./dist/dog-name-unified-widget.iife.js"></script>
+    <script>
+        // Enhanced initialization with debugging
+        function initializeWidget() {
+            console.log("🚀 Initializing Dog Name Widget (Local Test)...");
+
+            if (window.renderDogNameUnifiedWidget) {
+                try {
+                    window.renderDogNameUnifiedWidget();
+                    console.log("✅ Widget loaded successfully!");
+                } catch (error) {
+                    console.error("❌ Widget initialization failed:", error);
+                }
+            } else {
+                console.error("❌ Widget function not available");
+                // Retry after a short delay
+                setTimeout(() => {
+                    if (window.renderDogNameUnifiedWidget) {
+                        console.log("🔄 Retrying widget initialization...");
+                        window.renderDogNameUnifiedWidget();
+                    }
+                }, 1000);
+            }
+        }
+
+        // Try multiple initialization methods
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initializeWidget);
+        } else {
+            initializeWidget();
+        }
+
+        window.addEventListener("load", initializeWidget);
+    </script>
+</body>
+</html>

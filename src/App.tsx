@@ -213,7 +213,7 @@ function App() {
 
         {/* Widget Display */}
         {currentView === "unified" ? (
-          <DogNameGeneratorUnified apiKey={apiKey} />
+          <DogNameGeneratorUnified />
         ) : (
           <DogNameGeneratorGemini apiKey={apiKey} />
         )}

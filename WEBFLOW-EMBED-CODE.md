@@ -3,14 +3,14 @@
 ## ✅ Method 1: Standard Embed (Recommended)
 
 ```html
-<!-- Unified Dog Name Widget for Webflow -->
+<!-- Unified Dog Name Widget for Webflow (Backend Mode) -->
 <div
   class="dog-name-unified-widget"
-  data-api-key="AIzaSyB-T35VfSzeKXHIVaEh5OINtGB_8PlqTtk"
   data-cta-url="/your-target-page"
+  data-api-url="https://your-backend-api.com"
 ></div>
 
-<script src="https://cdn.jsdelivr.net/gh/zaynnzhong/dog-name-generator-widget@main/dist/dog-name-unified-widget.iife.js?v=2"></script>
+<script src="https://onlydogfanspage.github.io/dog-name-generator-/dog-name-unified-widget.iife.js"></script>
 <script>
   window.addEventListener("load", function () {
     console.log("🐕 Loading Dog Name Widget...");
@@ -30,7 +30,7 @@
 <!-- Unified Dog Name Widget with Debug Mode -->
 <div
   class="dog-name-unified-widget"
-  data-api-key="AIzaSyB-T35VfSzeKXHIVaEh5OINtGB_8PlqTtk"
+  data-api-url="https://your-backend-api.com"
   data-cta-url="/premium-names"
 >
   <div style="padding: 20px; text-align: center; color: #666;">
@@ -38,7 +38,7 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/zaynnzhong/dog-name-generator-widget@main/dist/dog-name-unified-widget.iife.js?v=2"></script>
+<script src="https://onlydogfanspage.github.io/dog-name-generator-/dog-name-unified-widget.iife.js"></script>
 <script>
   // Enhanced initialization with debugging
   function initializeWidget() {
