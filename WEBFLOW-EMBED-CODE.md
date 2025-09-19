@@ -10,7 +10,7 @@
   data-api-url="https://dog-name-generator-backend-pg3e01x4m-onlydogfans-projects.vercel.app"
 ></div>
 
-<script src="https://onlydogfanspage.github.io/dog-name-generator-/dog-name-unified-widget.iife.js"></script>
+<script src="https://zaynnzhong.github.io/dog-name-generator-widget/dog-name-unified-widget.iife.js"></script>
 <script>
   window.addEventListener("load", function () {
     console.log("🐕 Loading Dog Name Widget...");
@@ -38,7 +38,7 @@
   </div>
 </div>
 
-<script src="https://onlydogfanspage.github.io/dog-name-generator-/dog-name-unified-widget.iife.js"></script>
+<script src="https://zaynnzhong.github.io/dog-name-generator-widget/dog-name-unified-widget.iife.js"></script>
 <script>
   // Enhanced initialization with debugging
   function initializeWidget() {
