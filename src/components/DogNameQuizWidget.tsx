@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Heart,
   Sparkles,
@@ -40,7 +40,6 @@ export default function DogNameQuizWidget({
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [apiKey, setApiKey] = useState(propApiKey || "");
-  const [showApiKeyInput, setShowApiKeyInput] = useState(!propApiKey);
   const [quizStarted, setQuizStarted] = useState(false);
 
   const questions = [
@@ -137,12 +136,6 @@ export default function DogNameQuizWidget({
     },
   ];
 
-  const handleApiKeySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (apiKey.trim()) {
-      setShowApiKeyInput(false);
-    }
-  };
 
   const handleAnswerSelect = (questionId: string, value: string) => {
     setAnswers((prev) => ({ ...prev, [questionId]: value }));
@@ -180,7 +173,6 @@ export default function DogNameQuizWidget({
   const generateNames = async () => {
     if (!apiKey) {
       alert("API key is required. Please add your Gemini API key first.");
-      setShowApiKeyInput(true);
       return;
     }
 
@@ -274,7 +266,6 @@ Generate 5 creative dog names that match this personality profile. Make them ${a
         alert(
           "Invalid API key. Please check your Gemini API key and try again."
         );
-        setShowApiKeyInput(true);
       } else {
         alert("Failed to generate names. Please try again.");
       }
@@ -300,7 +291,7 @@ Generate 5 creative dog names that match this personality profile. Make them ${a
   };
 
   // API Key Input Screen
-  if (showApiKeyInput) {
+  if (false) {
     return (
       <div
         style={{
@@ -346,7 +337,7 @@ Generate 5 creative dog names that match this personality profile. Make them ${a
           </p>
         </div>
 
-        <form onSubmit={handleApiKeySubmit} style={{ marginBottom: "16px" }}>
+        <div style={{ marginBottom: "16px" }}>
           <label
             style={{
               display: "block",
@@ -395,7 +386,7 @@ Generate 5 creative dog names that match this personality profile. Make them ${a
           >
             🚀 Start Quiz
           </button>
-        </form>
+        </div>
 
         <div
           style={{
@@ -531,21 +522,6 @@ Generate 5 creative dog names that match this personality profile. Make them ${a
           </p>
         </div>
 
-        <button
-          onClick={() => setShowApiKeyInput(true)}
-          style={{
-            fontSize: "12px",
-            opacity: "0.7",
-            margin: "16px 0 0 0",
-            background: "none",
-            border: "none",
-            color: "white",
-            cursor: "pointer",
-            textDecoration: "underline",
-          }}
-        >
-          Change API Key
-        </button>
       </div>
     );
   }

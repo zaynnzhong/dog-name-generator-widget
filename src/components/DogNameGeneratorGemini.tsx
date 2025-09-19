@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Heart, Sparkles, Dog, Key, Search } from "lucide-react";
 
 interface DogNameGeneratorProps {
@@ -15,7 +15,6 @@ export default function DogNameGeneratorGemini({
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [apiKey, setApiKey] = useState(propApiKey || "");
-  const [showApiKeyInput, setShowApiKeyInput] = useState(!propApiKey);
   const [showBreedDropdown, setShowBreedDropdown] = useState(false);
 
   // Comprehensive dog breed list
@@ -199,12 +198,6 @@ export default function DogNameGeneratorGemini({
     .filter((dogBreed) => dogBreed.toLowerCase().includes(breed.toLowerCase()))
     .slice(0, 10); // Show max 10 suggestions
 
-  const handleApiKeySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (apiKey.trim()) {
-      setShowApiKeyInput(false);
-    }
-  };
 
   const generateNames = async () => {
     if (!breed || !gender || !preference) {
@@ -214,7 +207,6 @@ export default function DogNameGeneratorGemini({
 
     if (!apiKey) {
       alert("API key is required. Please add your Gemini API key first.");
-      setShowApiKeyInput(true);
       return;
     }
 
@@ -313,7 +305,6 @@ export default function DogNameGeneratorGemini({
         alert(
           "Invalid API key. Please check your Gemini API key and try again."
         );
-        setShowApiKeyInput(true);
       } else {
         alert("Failed to generate names. Please try again.");
       }
@@ -328,7 +319,7 @@ export default function DogNameGeneratorGemini({
   };
 
   // If no API key, show the setup screen
-  if (showApiKeyInput) {
+  if (false) {
     return (
       <div
         style={{
@@ -374,7 +365,7 @@ export default function DogNameGeneratorGemini({
           </p>
         </div>
 
-        <form onSubmit={handleApiKeySubmit} style={{ marginBottom: "16px" }}>
+        <div style={{ marginBottom: "16px" }}>
           <label
             style={{
               display: "block",
@@ -423,7 +414,7 @@ export default function DogNameGeneratorGemini({
           >
             🚀 Start Generating Names
           </button>
-        </form>
+        </div>
 
         <div
           style={{
@@ -523,21 +514,6 @@ export default function DogNameGeneratorGemini({
           >
             Create the perfect name for your furry friend! 🐕✨
           </p>
-          <button
-            onClick={() => setShowApiKeyInput(true)}
-            style={{
-              fontSize: "12px",
-              opacity: "0.7",
-              margin: "8px 0 0 0",
-              background: "none",
-              border: "none",
-              color: "white",
-              cursor: "pointer",
-              textDecoration: "underline",
-            }}
-          >
-            Change API Key
-          </button>
         </div>
 
         {!showResults ? (
