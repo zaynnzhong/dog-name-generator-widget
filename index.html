@@ -1,13 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/dog-icon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dog Name Generator Widget</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Name Generator Widgets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        h1 { text-align: center; }
+        .widget-list {
+            background: white;
+            color: #333;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+    <h1>🐕 Dog Name Generator Widgets</h1>
+    
+    <div class="container">
+        <h2>Available Widget Files</h2>
+        
+        <div class="widget-list">
+            <h3>Unified Widget (Clean - No API Key)</h3>
+            <p><strong>File:</strong> <code>dog-name-unified-widget.iife.js</code></p>
+            <p><strong>URL:</strong> <code>https://onlydogfanspage.github.io/dog-name-generator-/dog-name-unified-widget.iife.js</code></p>
+            <p><strong>Features:</strong> Backend-powered, Quiz + Quick Generate modes</p>
+        </div>
+
+        <div class="widget-list">
+            <h3>Standard Widget</h3>
+            <p><strong>File:</strong> <code>widget-only.js</code></p>
+            <p><strong>URL:</strong> <code>https://onlydogfanspage.github.io/dog-name-generator-/widget-only.js</code></p>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Embed Code (Clean Version)</h2>
+        <div class="widget-list">
+            <pre><code>&lt;!-- Dog Name Generator Widget (No API Key Required) --&gt;
+&lt;div
+  class="dog-name-unified-widget"
+  data-cta-url="/premium-names"
+  data-api-url="https://dog-name-generator-backend-pg3e01x4m-onlydogfans-projects.vercel.app"
+&gt;&lt;/div&gt;
+
+&lt;script src="https://onlydogfanspage.github.io/dog-name-generator-/dog-name-unified-widget.iife.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.addEventListener("load", function () {
+    if (window.renderDogNameUnifiedWidget) {
+      window.renderDogNameUnifiedWidget();
+    }
+  });
+&lt;/script&gt;</code></pre>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Widget Demo</h2>
+        <div class="dog-name-unified-widget" 
+             data-cta-url="/premium-names"
+             data-api-url="https://dog-name-generator-backend-pg3e01x4m-onlydogfans-projects.vercel.app">
+        </div>
+    </div>
+
+    <script src="./dog-name-unified-widget.iife.js"></script>
+    <script>
+        // Check widget file availability
+        fetch('./dog-name-unified-widget.iife.js')
+            .then(response => {
+                const status = document.createElement('div');
+                status.className = response.ok ? 'status success' : 'status error';
+                status.innerHTML = response.ok ? 
+                    '✅ Unified widget file is available!' : 
+                    '❌ Unified widget file not found!';
+                document.querySelector('.container').appendChild(status);
+            })
+            .catch(error => {
+                const status = document.createElement('div');
+                status.className = 'status error';
+                status.innerHTML = '❌ Error loading widget file: ' + error.message;
+                document.querySelector('.container').appendChild(status);
+            });
+
+        // Initialize widget
+        window.addEventListener("load", function () {
+            if (window.renderDogNameUnifiedWidget) {
+                window.renderDogNameUnifiedWidget();
+                console.log("✅ Widget initialized successfully!");
+            } else {
+                console.error("❌ Widget function not found");
+            }
+        });
+    </script>
+</body>
 </html>
