@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Widget - Direct Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .debug-info {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #007bff;
+        }
+        .error-info {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+        }
+        .success-info {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #28a745;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <h1>🐕 Debug Widget Test</h1>
+    
+    <div class="debug-info">
+        <h3>Backend API Test</h3>
+        <p><strong>URL:</strong> https://dog-name-generator-backend-d40b1jow7-onlydogfans-projects.vercel.app</p>
+        <p><strong>Status:</strong> <span id="api-status">Testing...</span></p>
+        <button onclick="testAPI()">Test API Directly</button>
+    </div>
+
+    <div class="debug-info">
+        <h3>Widget Configuration</h3>
+        <p><strong>API URL:</strong> <span id="widget-api-url">Loading...</span></p>
+        <p><strong>CTA URL:</strong> <span id="widget-cta-url">Loading...</span></p>
+    </div>
+
+    <div class="debug-info">
+        <h3>Widget Console Logs</h3>
+        <div id="console-logs" style="background: #f8f9fa; padding: 10px; border-radius: 4px; font-family: monospace; white-space: pre-wrap; max-height: 200px; overflow-y: auto;"></div>
+    </div>
+
+    <div class="debug-info">
+        <h2>Dog Name Generator Widget</h2>
+        <div
+          class="dog-name-unified-widget"
+          data-cta-url="/premium-names"
+          data-api-url="https://dog-name-generator-backend-d40b1jow7-onlydogfans-projects.vercel.app"
+        >
+            <div style="padding: 20px; text-align: center; color: #666;">
+                🐕 Loading Dog Name Generator...
+            </div>
+        </div>
+    </div>
+
+    <!-- Use local version first to test -->
+    <script src="./dog-name-unified-widget.iife.js"></script>
+    <script>
+        // Capture console logs
+        const originalLog = console.log;
+        const originalError = console.error;
+        const logContainer = document.getElementById('console-logs');
+        
+        function addLog(message, type = 'log') {
+            const timestamp = new Date().toISOString().split('T')[1].slice(0, 8);
+            logContainer.textContent += `[${timestamp}] ${type.toUpperCase()}: ${message}\n`;
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            addLog(args.join(' '), 'log');
+            originalLog.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+            addLog(args.join(' '), 'error');
+            originalError.apply(console, args);
+        };
+
+        // Test API directly
+        async function testAPI() {
+            const statusElement = document.getElementById('api-status');
+            const apiUrl = 'https://dog-name-generator-backend-d40b1jow7-onlydogfans-projects.vercel.app';
+            
+            try {
+                statusElement.textContent = 'Testing...';
+                const response = await fetch(`${apiUrl}/api/generate-names`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt: 'Generate 5 test dog names' })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    statusElement.textContent = `✅ SUCCESS: ${JSON.stringify(data)}`;
+                    statusElement.parentElement.className = 'success-info';
+                } else {
+                    statusElement.textContent = `❌ HTTP Error: ${response.status} ${response.statusText}`;
+                    statusElement.parentElement.className = 'error-info';
+                }
+            } catch (error) {
+                statusElement.textContent = `❌ Network Error: ${error.message}`;
+                statusElement.parentElement.className = 'error-info';
+                console.error('API Test Error:', error);
+            }
+        }
+
+        // Show widget configuration
+        function showWidgetConfig() {
+            const widget = document.querySelector('.dog-name-unified-widget');
+            if (widget) {
+                document.getElementById('widget-api-url').textContent = widget.getAttribute('data-api-url') || 'Not set';
+                document.getElementById('widget-cta-url').textContent = widget.getAttribute('data-cta-url') || 'Not set';
+            }
+        }
+
+        // Initialize
+        window.addEventListener("load", function () {
+            console.log("🚀 Page loaded, initializing widget...");
+            showWidgetConfig();
+            testAPI(); // Auto-test API
+            
+            if (window.renderDogNameUnifiedWidget) {
+                try {
+                    window.renderDogNameUnifiedWidget();
+                    console.log("✅ Widget initialized successfully!");
+                } catch (error) {
+                    console.error("❌ Widget initialization failed:", error);
+                }
+            } else {
+                console.error("❌ renderDogNameUnifiedWidget function not found");
+                setTimeout(() => {
+                    if (window.renderDogNameUnifiedWidget) {
+                        console.log("🔄 Retrying widget initialization...");
+                        window.renderDogNameUnifiedWidget();
+                    } else {
+                        console.error("❌ Widget function still not available after retry");
+                    }
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>
