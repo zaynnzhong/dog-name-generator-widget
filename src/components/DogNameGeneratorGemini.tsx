@@ -14,7 +14,7 @@ export default function DogNameGeneratorGemini({
   const [generatedNames, setGeneratedNames] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  const [apiKey, setApiKey] = useState(propApiKey || "");
+  const [apiKey, setApiKey] = useState(propApiKey || (window as any).GEMINI_API_KEY || "");
   const [showBreedDropdown, setShowBreedDropdown] = useState(false);
 
   // Comprehensive dog breed list
@@ -318,8 +318,8 @@ export default function DogNameGeneratorGemini({
     setGeneratedNames([]);
   };
 
-  // If no API key, show the setup screen
-  if (false) {
+  // Skip API key setup screen - get from window.GEMINI_API_KEY
+  if (false && !apiKey) {
     return (
       <div
         style={{
